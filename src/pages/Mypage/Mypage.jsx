@@ -28,6 +28,7 @@ function Mypage() {
         useInput();
     const [profileUrl, setProfileUrl] = useState(defaultProfile);
 
+    // eslint-disable-next-line no-unused-vars
     const [refresh, setRefresh] = useRecoilState(mypageSubmitRefreshState);
 
     const fileRef = useRef();
@@ -70,7 +71,7 @@ function Mypage() {
 
         localStorage.setItem("user", JSON.stringify(user));
         alert("회원 정보를 수정하였습니다.");
-        setRefresh(() => true);
+        setRefresh((refresh) => !refresh);
     };
 
     return (

@@ -8,19 +8,15 @@ import { mypageSubmitRefreshState } from "../../atoms/mypageSubmitRefresh";
 
 function RootHeader() {
     const [profileImage, setProfileImage] = useState(defaultImg);
-    const [refresh, setRefresh] = useRecoilState(mypageSubmitRefreshState);
+    const [refresh] = useRecoilState(mypageSubmitRefreshState);
 
     useEffect(() => {
-        if (refresh) {
-            const localStorageUser = localStorage.getItem("user");
-            if (!localStorageUser) {
-                return;
-            }
-            const user = JSON.parse(localStorageUser);
-            setProfileImage(() => user.imgUrl);
-            setRefresh(() => false);
+        const localStorageUser = localStorage.getItem("user");
+        if (!localStorageUser) {
+            return;
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        const user = JSON.parse(localStorageUser);
+        setProfileImage(() => user.imgUrl);
     }, [refresh]);
     return (
         <div css={S.layout}>
