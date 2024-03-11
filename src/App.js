@@ -6,6 +6,7 @@ import RootHeader from './components/RootHeader/RootHeader';
 import { SIDEBAR_MENUS } from './constants/menu';
 
 function App() {
+  
   return (
     <RootLayout>
       <RootHeader />

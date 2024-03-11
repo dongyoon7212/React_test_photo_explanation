@@ -37,6 +37,7 @@ function Mypage(props) {
             setBirthdayValue(() => user.birthday);
             setProfileUrl(() => user.imgUrl);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleFileChange = (e) => {
