@@ -1,6 +1,6 @@
 import React from "react";
 
-function Component4(props) {
+function Component4({ value, setValue }) {
     return (
         <div>
             <input

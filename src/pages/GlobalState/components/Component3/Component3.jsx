@@ -1,10 +1,10 @@
-import React from 'react';
-import Component4 from '../Component4/Component4';
+import React from "react";
+import Component4 from "../Component4/Component4";
 
-function Component3(props) {
+function Component3({ value, setValue }) {
     return (
         <div>
-            <Component4 />
+            <Component4 value={value} setValue={setValue} />
         </div>
     );
 }
