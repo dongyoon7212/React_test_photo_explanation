@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import * as S from "./style";
 import WideButton from "../../components/WideButton/WideButton";
+import { useRef } from "react";
 
 /**
  *  1. 사진 불러오기 버튼을 클릭 후 5개 이상의 이미지를 불러올 수 있어야함.
@@ -22,12 +23,86 @@ import WideButton from "../../components/WideButton/WideButton";
  */
 
 function PhotoRegister() {
+    const fileRef = useRef();
+
+    const handleFileChange = (e) => {
+        const fileList = e.target.files;
+        const fileArray = Array.from(fileList);
+
+        fileRef.current.value = "";
+
+        if (fileArray.length === 0) {
+            return;
+        }
+
+        const filePromiseArray = fileArray.map(
+            (file) =>
+                new Promise((resolve) => {
+                    const fileReader = new FileReader();
+
+                    fileReader.onload = (e) => {
+                        resolve(e.target.result);
+                    };
+
+                    fileReader.readAsDataURL(file);
+                })
+        );
+
+        Promise.all(filePromiseArray).then((result) => {
+            const isSave = window.confirm("사진을 저장하시겠습니까?");
+            if (!isSave) {
+                return;
+            } else {
+                const localStorageFiles = !localStorage.getItem("photo")
+                    ? []
+                    : JSON.parse(localStorage.getItem("photo"));
+
+                const lastId =
+                    localStorageFiles.length === 0
+                        ? 0
+                        : localStorageFiles[localStorageFiles.length - 1].id;
+
+                result = result.map((dataUrl, index) => {
+                    return {
+                        id: lastId + index + 1,
+                        imageUrl: dataUrl,
+                    };
+                });
+                const newFiles = [...localStorageFiles, ...result];
+                localStorage.setItem("photo", JSON.stringify(newFiles));
+                alert("사진 저장을 완료하였습니다.");
+            }
+        });
+    };
 
     return (
         <div css={S.layout}>
-            <h1 css={S.title}>사진 등록하기</h1>
-            <input type="file" style={{display: "none"}} multiple={true} />
-            <WideButton text={"사진 불러오기"} onClick={null}/>
+            <div css={S.header}>
+                <h1 css={S.title}>사진 등록하기</h1>
+                <button css={S.submitButton}>완료</button>
+            </div>
+            <input
+                type="file"
+                style={{ display: "none" }}
+                multiple={true}
+                ref={fileRef}
+                onChange={handleFileChange}
+            />
+            <div css={S.container}>
+                <div>
+                    <input css={S.checkBox} type="checkbox" id="img1" />
+                    <label css={S.imageBox} htmlFor="img1">
+                        <div>2</div>
+                        <img src="" alt="" />
+                    </label>
+                </div>
+            </div>
+            <WideButton
+                text={"사진 불러오기"}
+                onClick={() => {
+                    fileRef.current.click();
+                }}
+            />
         </div>
     );
 }
