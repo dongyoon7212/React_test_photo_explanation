@@ -1,11 +1,15 @@
-import React from 'react';
+import React from "react";
 
-function component4(props) {
+function Component4(props) {
     return (
         <div>
-            
+            <input
+                type="text"
+                value={value}
+                onChange={(e) => setValue(() => e.target.value)}
+            />
         </div>
     );
 }
 
-export default component4;
+export default Component4;
