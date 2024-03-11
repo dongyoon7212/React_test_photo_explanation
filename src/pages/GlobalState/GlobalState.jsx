@@ -1,13 +1,14 @@
-import React, { useState } from "react";
 import Component1 from "./components/Component1/Component1";
+import { useRecoilState } from "recoil";
+import { inputState } from "./atoms/inputState";
 
 function GlobalState(props) {
-    const [value, setValue] = useState("");
+    const [value] = useRecoilState(inputState);
 
     return (
         <div>
             <h1>{value}</h1>
-            <Component1 value={value} setValue={setValue} />
+            <Component1 />
         </div>
     );
 }

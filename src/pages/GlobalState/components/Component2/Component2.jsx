@@ -1,10 +1,10 @@
 import React from "react";
 import Component3 from "../Component3/Component3";
 
-function Component2({ value, setValue }) {
+function Component2() {
     return (
         <div>
-            <Component3 value={value} setValue={setValue} />
+            <Component3 />
         </div>
     );
 }

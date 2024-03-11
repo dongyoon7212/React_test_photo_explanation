@@ -4,6 +4,8 @@ import WideButton from "../../components/WideButton/WideButton";
 import { useInput } from "../../hooks/useInput";
 import * as S from "./style";
 import defaultProfile from "../../assets/images/profile/default.jpeg";
+import { useRecoilState } from "recoil";
+import { mypageSubmitRefreshState } from "../../atoms/mypageSubmitRefresh";
 
 /**
  *
@@ -18,13 +20,16 @@ import defaultProfile from "../../assets/images/profile/default.jpeg";
  *  저장되어야하고 페이지 로드시 불러와야함.
  * 3. RootHeader의 프로필 이미지도 변경되어야함.
  */
-function Mypage(props) {
+function Mypage() {
     const [nicknameValue, handleNicknameOnChange, setNicknameValue] =
         useInput();
     const [nameValue, handleNameOnChange, setNameValue] = useInput();
     const [birthdayValue, handleBirthdayOnChange, setBirthdayValue] =
         useInput();
     const [profileUrl, setProfileUrl] = useState(defaultProfile);
+
+    const [refresh, setRefresh] = useRecoilState(mypageSubmitRefreshState);
+
     const fileRef = useRef();
 
     useEffect(() => {
@@ -65,6 +70,7 @@ function Mypage(props) {
 
         localStorage.setItem("user", JSON.stringify(user));
         alert("회원 정보를 수정하였습니다.");
+        setRefresh(() => true);
     };
 
     return (
