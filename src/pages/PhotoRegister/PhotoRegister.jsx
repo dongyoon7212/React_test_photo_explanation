@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import * as S from "./style";
 import WideButton from "../../components/WideButton/WideButton";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 /**
  *  1. 사진 불러오기 버튼을 클릭 후 5개 이상의 이미지를 불러올 수 있어야함.
@@ -26,6 +26,19 @@ function PhotoRegister() {
     const fileRef = useRef();
     const [loadPhotos, setLoadPhotos] = useState([]);
     const [photoSeq, setPhotoSeq] = useState([]);
+
+    useEffect(() => {
+        setLoadPhotos(() =>
+            loadPhotos.map((photo) => {
+                return {
+                    ...photo,
+                    seq: photoSeq.includes(photo.id)
+                        ? photoSeq.indexOf(photo.id) + 1
+                        : 0,
+                };
+            })
+        );
+    }, [photoSeq]);
 
     const handleFileChange = (e) => {
         const fileList = e.target.files;
@@ -62,6 +75,16 @@ function PhotoRegister() {
             );
         });
     };
+
+    const handlePhotoCheck = (id) => {
+        if (photoSeq.includes(id)) {
+            setPhotoSeq((photoSeq) => photoSeq.filter((seq) => seq !== id));
+        } else {
+            setPhotoSeq((photoSeq) => [...photoSeq, id]);
+        }
+    };
+
+    console.log(photoSeq);
 
     // const handleSubmitClick = () => {
     //     const isSave = window.confirm("사진을 저장하시겠습니까?");
@@ -109,6 +132,7 @@ function PhotoRegister() {
                             css={S.checkBox}
                             type="checkbox"
                             id={"img" + photo.id}
+                            onChange={() => handlePhotoCheck(photo.id)}
                         />
                         <label css={S.imageBox} htmlFor={"img" + photo.id}>
                             <div>{photo.seq}</div>
